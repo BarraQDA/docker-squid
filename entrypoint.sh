@@ -30,6 +30,10 @@ if [[ -z ${1} ]]; then
     echo "Initializing cache..."
     $(which squid) -N -f /etc/squid/squid.conf -z
   fi
+  echo "Starting certgen..."
+  if [ ! -d "${SQUID_CERT_DIR}" ]; then
+    /usr/lib/squid/security_file_certgen -c -s "${SQUID_CERT_DIR}" -M 4MB
+  fi
   echo "Starting squid..."
   exec $(which squid) -f /etc/squid/squid.conf -NYCd 1 ${EXTRA_ARGS}
 else
